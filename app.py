@@ -3,10 +3,9 @@ import os
 import tempfile
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.chains import ConversationalRetrievalChain
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain.chains import RetrievalQA
 from langchain.memory import ConversationBufferMemory
 st.set_page_config(page_title="MaintenoBot AI", page_icon="⚡")
 st.title("⚡ MaintenoBot AI - Industrial PM Extractor")
@@ -24,7 +23,8 @@ def load_pdf_and_create_db(pdf_file):
     docs = loader.load()
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     chunks = splitter.split_documents(docs)
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+   
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vector_db = FAISS.from_texts([chunk.page_content for chunk in chunks], embeddings)
     return vector_db
 
