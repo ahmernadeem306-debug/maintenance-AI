@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+import tempfile
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -6,9 +8,6 @@ from langchain_community.vectorstores import FAISS
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
-import os
-import tempfile
-
 st.set_page_config(page_title="MaintenoBot AI", page_icon="⚡")
 st.title("⚡ MaintenoBot AI - Industrial PM Extractor")
 st.caption("⚠️ Safety First: Follow LOTO. Use PPE. Verify with supervisor before execution.")
