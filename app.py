@@ -1,16 +1,25 @@
 import streamlit as st
 import os
-import tempfile
-import google.generativeai as genai
+from google import genai
 from pypdf import PdfReader
 
 st.set_page_config(page_title="PDF Chat with Gemini")
 st.title("PDF Chat - Maintenance AI")
 
 GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
-genai.configure(api_key=GEMINI_API_KEY)
-model=genai.GenerativeModel('gemini-pro')
+# Nayi library mein client banta hai
+client = genai.Client(api_key=GEMINI_API_KEY)
 
+# Model ka naam bhi simple ho gaya
+model_name = 'gemini-2.5-flash'  # Ya 'gemini-2.0-flash'
+
+# Generate karne ka tareeqa bhi badal gaya
+response = client.models.generate_content(
+    model=model_name,
+    contents=full_prompt
+)
+
+st.write(response.text)
         
 
 
