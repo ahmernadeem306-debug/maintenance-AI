@@ -11,7 +11,7 @@ GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 # Model ka naam bhi simple ho gaya
-model_name = 'gemini-2.5-flash'  # Ya 'gemini-2.0-flash'
+model_name = 'gemini-2.0-flash'  # Ya 'gemini-2.0-flash'
 
 # Generate karne ka tareeqa bhi badal gaya
 response = client.models.generate_content(
