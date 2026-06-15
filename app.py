@@ -3,7 +3,7 @@ from google import genai
 from pypdf import PdfReader
 
 st.set_page_config(page_title="Maintenance AI")
-st.title("Machine Maintenance Extractor 🔧")
+st.title("Machine Maintenance Extractor ")
 
 GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 client = genai.Client(api_key=GEMINI_API_KEY)
