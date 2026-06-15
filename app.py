@@ -60,7 +60,7 @@ if uploaded_file:
                     model=model_name,
                     contents=full_prompt
                 )
-                st.subheader("Key Maintenance Procedures 👇")
+                st.subheader("Key Maintenance Procedures ")
                 st.write(response.text)
                 
             except Exception as e:
