@@ -9,7 +9,7 @@ st.title("PDF Chat - Maintenance AI")
 
 GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 genai.configure(api_key=GEMINI_API_KEY)
-for m in genai.list_models:
+for m in genai.list_models():
     if 'generateContent' in m.supported_generation_methods:
         print(m.name)
 
