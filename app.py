@@ -7,9 +7,9 @@ st.title("Machine Maintenance Extractor 🔧")
 
 GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 client = genai.Client(api_key=GEMINI_API_KEY)
-model_name = 'gemini-flash-latest'  # Ye model free mein sabse stable hai
+model_name = 'gemini-flash-latest'
 
-uploaded_file = st.file_uploader("Machine ki Maintenance PDF Upload Karo", type="pdf")
+uploaded_file = st.file_uploader("Upload Machine Maintenance PDF", type="pdf")
 
 if uploaded_file:
     pdf_reader = PdfReader(uploaded_file)
@@ -17,35 +17,42 @@ if uploaded_file:
     for page in pdf_reader.pages:
         text += page.extract_text()
     
-    st.success("PDF Read Ho Gayi!")
+    st.success("PDF Successfully Loaded!")
     
-    if st.button("Maintenance Points Nikalo"):
-        with st.spinner("Important maintenance points nikal raha hoon..."):
+    if st.button("Extract Maintenance Points"):
+        with st.spinner("Extracting key maintenance procedures..."):
             
-            # Yahan prompt change kar diya - ab sawal nahi pooche ga
+            # Yahan prompt badal diya - ab English mein de ga
             full_prompt = f"""
-            Tum ek maintenance expert ho. Neeche machine ki manual/maintenance file ka text hai.
+            You are a professional maintenance engineer. Analyze the following machine manual text.
             
-            Tumhara kaam:
-            1. Sirf maintenance se related important points nikalo
-            2. Har point ko short aur easy Urdu ya Roman Urdu mein likho
-            3. Bullets mein de do
-            4. Faltu detail mat do. Sirf kaam ki baat: daily, weekly, monthly checks, lubrication, safety, cleaning
-            5. Agar PDF mein maintenance na ho to keh do "Is PDF mein maintenance ki details nahi hain"
+            Your task:
+            1. Extract only maintenance-related procedures and checks
+            2. Present them in clear, professional English
+            3. Use bullet points and categorize by frequency
+            4. Keep it concise and actionable. No extra explanation
+            5. Focus on: daily checks, weekly tasks, monthly procedures, lubrication, safety protocols, cleaning
+            6. If no maintenance info is found, state: "No maintenance procedures found in this document"
 
-            PDF ka Text:
+            Manual Text:
             {text}
             
-            Output ka format ye ho:
-            **Daily Maintenance:**
-            - Point 1
-            - Point 2
+            Use this exact format:
             
-            **Weekly Maintenance:**
-            - Point 1
+            **Daily Maintenance**
+            - Inspect and clean steps and comb plates before operation
+            - Ensure floor area around escalator is clear of obstructions
+            - Verify comb plate teeth are not broken or bent
+            - Check handrail condition and synchronization with steps
             
-            **Important Safety:**
-            - Point 1
+            **Weekly Maintenance**
+            - [Point 1]
+            
+            **Monthly Maintenance**
+            - [Point 1]
+            
+            **Safety Critical Checks**
+            - [Point 1]
             """
             
             try:
@@ -53,9 +60,10 @@ if uploaded_file:
                     model=model_name,
                     contents=full_prompt
                 )
-                st.subheader("Maintenance Ke Important Points 👇")
+                st.subheader("Key Maintenance Procedures 👇")
                 st.write(response.text)
                 
             except Exception as e:
-                st.error(f"Error aa gaya bhai: {e}")
-                st.info("Ho sakta hai API key expire ho ya quota khatam. Nayi key bana le Google AI Studio se.")
+                st.error(f"Error: {e}")
+                st.info("Check your API key quota or try again in a few minutes.")
+    
